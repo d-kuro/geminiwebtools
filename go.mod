@@ -2,7 +2,7 @@ module github.com/d-kuro/geminiwebtools
 
 go 1.24.0
 
-toolchain go1.24.4
+toolchain go1.24.5
 
 require (
 	golang.org/x/net v0.42.0
