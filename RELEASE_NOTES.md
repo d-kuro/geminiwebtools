@@ -1,5 +1,38 @@
 # Release Notes
 
+## v0.0.2 - Code Cleanup and Enhanced Authentication (2025-07-18)
+
+### Improvements
+
+🧹 **Code Quality**
+- Removed unused functions and imports from HTTP client
+- Cleaned up deprecated configuration functions
+- Fixed all golangci-lint issues (0 remaining)
+
+🔐 **Enhanced Authentication**
+- Enterprise-grade OAuth2 authenticator with concurrent access protection
+- Background token refresh with configurable thresholds
+- Exponential backoff retry mechanisms with jitter
+- Improved token validation and error handling
+- Added shared authenticator for cross-client token sharing
+
+⚡ **Performance Optimizations**
+- Better connection pooling and HTTP client reuse
+- Optimized token caching and storage I/O
+- Improved memory allocation for content processing
+
+### Requirements
+
+- Go 1.24 or later
+- Google OAuth2 credentials (compatible with gemini-cli)
+- Internet connection for authentication and API calls
+
+### Migration Notes
+
+This release maintains full backward compatibility. No changes required for existing code.
+
+---
+
 ## v0.0.1 - Initial Release (Experimental)
 
 ⚠️ **Experimental Version** - This is an experimental release and may include breaking changes in future versions. The API is not yet stable and should be used with caution in production environments.

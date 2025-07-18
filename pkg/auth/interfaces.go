@@ -125,3 +125,26 @@ func (sa *SharedAuthenticator) GetAuthenticatedClient(ctx context.Context) (*htt
 func (sa *SharedAuthenticator) GetOAuth2Authenticator() *OAuth2Authenticator {
 	return sa.oauth2Auth
 }
+
+// Enhanced functionality methods - these provide access to the new features
+// while maintaining the existing interface contract.
+
+// GetRefreshState returns the current refresh state for monitoring.
+func (sa *SharedAuthenticator) GetRefreshState() *RefreshState {
+	return sa.oauth2Auth.GetRefreshState()
+}
+
+// SetRefreshConfig updates the refresh configuration.
+func (sa *SharedAuthenticator) SetRefreshConfig(config *RefreshConfig) {
+	sa.oauth2Auth.SetRefreshConfig(config)
+}
+
+// GetRefreshConfig returns a copy of the current refresh configuration.
+func (sa *SharedAuthenticator) GetRefreshConfig() *RefreshConfig {
+	return sa.oauth2Auth.GetRefreshConfig()
+}
+
+// Shutdown gracefully shuts down the background refresh process.
+func (sa *SharedAuthenticator) Shutdown() {
+	sa.oauth2Auth.Shutdown()
+}

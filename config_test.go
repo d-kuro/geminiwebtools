@@ -261,24 +261,3 @@ func TestConfigError(t *testing.T) {
 		t.Errorf("Expected error message %q, got %q", expected, err.Error())
 	}
 }
-
-func TestDefaultConfig(t *testing.T) {
-	config := DefaultConfig()
-
-	if config == nil {
-		t.Fatal("DefaultConfig returned nil")
-	}
-
-	// Should have the same behavior as NewConfig()
-	newConfig := NewConfig()
-
-	if config.CodeAssistEndpoint != newConfig.CodeAssistEndpoint {
-		t.Error("DefaultConfig should match NewConfig behavior")
-	}
-	if config.GeminiAPIEndpoint != newConfig.GeminiAPIEndpoint {
-		t.Error("DefaultConfig should match NewConfig behavior")
-	}
-	if config.DefaultModel != newConfig.DefaultModel {
-		t.Error("DefaultConfig should match NewConfig behavior")
-	}
-}

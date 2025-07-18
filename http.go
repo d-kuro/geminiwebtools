@@ -8,12 +8,10 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-	"strings"
 	"sync"
 	"time"
 
 	"github.com/d-kuro/geminiwebtools/pkg/constants"
-	"golang.org/x/net/html"
 )
 
 // HTTPClient provides secure HTTP functionality for web content fetching.
@@ -381,130 +379,4 @@ func validateRedirectURL(redirectURL *url.URL, via []*http.Request) error {
 	}
 
 	return nil
-}
-
-// ExtractTextFromHTML safely extracts text content from HTML using the standard html parser.
-func ExtractTextFromHTML(htmlContent string) string {
-	doc, err := html.Parse(strings.NewReader(htmlContent))
-	if err != nil {
-		// Fallback to simple tag removal if parsing fails
-		return fallbackTextExtraction(htmlContent)
-	}
-
-	// Extract text nodes while skipping dangerous elements
-	var result strings.Builder
-	extractTextNodes(doc, &result)
-
-	// Clean up whitespace
-	content := result.String()
-	content = strings.ReplaceAll(content, "\n", " ")
-	content = strings.ReplaceAll(content, "\t", " ")
-
-	// Collapse multiple spaces
-	for strings.Contains(content, "  ") {
-		content = strings.ReplaceAll(content, "  ", " ")
-	}
-
-	return strings.TrimSpace(content)
-}
-
-// extractTextNodes recursively extracts text from HTML nodes while filtering out dangerous content
-func extractTextNodes(node *html.Node, result *strings.Builder) {
-	if node == nil {
-		return
-	}
-
-	// Skip dangerous elements
-	if node.Type == html.ElementNode {
-		switch strings.ToLower(node.Data) {
-		case "script", "style", "noscript", "iframe", "object", "embed":
-			return // Skip these elements and their children entirely
-		}
-	}
-
-	// Extract text content
-	if node.Type == html.TextNode {
-		text := strings.TrimSpace(node.Data)
-		if text != "" {
-			result.WriteString(text)
-			result.WriteString(" ")
-		}
-	}
-
-	// Process child nodes
-	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		extractTextNodes(child, result)
-	}
-}
-
-// fallbackTextExtraction provides simple fallback text extraction
-func fallbackTextExtraction(htmlContent string) string {
-	// Remove script and style tags with their content
-	content := removeHTMLTagsWithContent(htmlContent, constants.HTMLTagsToRemove)
-
-	// Remove all other HTML tags
-	content = removeHTMLTags(content)
-
-	// Clean up whitespace
-	content = strings.ReplaceAll(content, constants.WhitespaceNewline, " ")
-	content = strings.ReplaceAll(content, constants.WhitespaceTab, " ")
-
-	// Collapse multiple spaces
-	for strings.Contains(content, constants.WhitespaceDouble) {
-		content = strings.ReplaceAll(content, constants.WhitespaceDouble, " ")
-	}
-
-	return strings.TrimSpace(content)
-}
-
-// removeHTMLTagsWithContent removes specified HTML tags along with their content.
-func removeHTMLTagsWithContent(content string, tags []string) string {
-	for _, tag := range tags {
-		startTag := "<" + tag
-		endTag := "</" + tag + ">"
-
-		for {
-			start := strings.Index(strings.ToLower(content), startTag)
-			if start == -1 {
-				break
-			}
-
-			// Find the end of the opening tag
-			tagEnd := strings.Index(content[start:], ">")
-			if tagEnd == -1 {
-				break
-			}
-			tagEnd += start + 1
-
-			// Find the closing tag
-			end := strings.Index(strings.ToLower(content[tagEnd:]), endTag)
-			if end == -1 {
-				break
-			}
-			end += tagEnd + len(endTag)
-
-			// Remove the entire tag and its content
-			content = content[:start] + content[end:]
-		}
-	}
-
-	return content
-}
-
-// removeHTMLTags removes all HTML tags from content.
-func removeHTMLTags(content string) string {
-	inTag := false
-	var result strings.Builder
-
-	for _, char := range content {
-		if char == '<' {
-			inTag = true
-		} else if char == '>' {
-			inTag = false
-		} else if !inTag {
-			result.WriteRune(char)
-		}
-	}
-
-	return result.String()
 }
