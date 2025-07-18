@@ -2,46 +2,32 @@
 
 ## v0.0.2 - Code Cleanup and Enhanced Authentication (2025-07-18)
 
-### 🧹 Code Quality Improvements
+### Improvements
 
-**Code Cleanup**
-- Removed unused functions from HTTP client (`extractTextNodes`, `fallbackTextExtraction`, `removeHTMLTagsWithContent`, `removeHTMLTags`)
-- Cleaned up unused imports (`strings`, `golang.org/x/net/html`)
-- Fixed all golangci-lint issues (0 remaining issues)
-- Updated deprecated function references in comments and documentation
+🧹 **Code Quality**
+- Removed unused functions and imports from HTTP client
+- Cleaned up deprecated configuration functions
+- Fixed all golangci-lint issues (0 remaining)
 
-**Enhanced Authentication System**
-- Added comprehensive `TokenProvider` interface for authentication abstraction
-- Enhanced `OAuth2Authenticator` with enterprise-grade reliability features:
-  - Concurrent access protection using mutexes
-  - Background token refresh with configurable thresholds
-  - Exponential backoff retry mechanisms with jitter
-  - Refresh state tracking and monitoring capabilities
-  - Graceful fallback during token refresh failures
-- Added `SharedAuthenticator` for cross-client token sharing
+🔐 **Enhanced Authentication**
+- Enterprise-grade OAuth2 authenticator with concurrent access protection
+- Background token refresh with configurable thresholds
+- Exponential backoff retry mechanisms with jitter
 - Improved token validation and error handling
-- Added comprehensive refresh configuration options
+- Added shared authenticator for cross-client token sharing
 
-**Performance Optimizations**
+⚡ **Performance Optimizations**
 - Better connection pooling and HTTP client reuse
-- Optimized memory allocation for content reading
-- Improved token caching with configurable validity periods
-- Reduced storage I/O through intelligent caching
+- Optimized token caching and storage I/O
+- Improved memory allocation for content processing
 
-### 🔧 Technical Improvements
+### Requirements
 
-- Added new constants for authentication and retry configurations
-- Enhanced error types with detailed operation context
-- Improved concurrent access patterns throughout the codebase
-- Better separation of concerns in authentication logic
+- Go 1.24 or later
+- Google OAuth2 credentials (compatible with gemini-cli)
+- Internet connection for authentication and API calls
 
-### 📖 Documentation
-
-- Updated function references from deprecated names to current API
-- Ensured all code examples use correct function names
-- Maintained backward compatibility documentation
-
-### 🔄 Migration Notes
+### Migration Notes
 
 This release maintains full backward compatibility. No changes required for existing code.
 
