@@ -97,6 +97,17 @@ const (
 	MinTokenLength        = 10   // Minimum token length
 	MaxTokenLength        = 4096 // Maximum token length
 
+	// Enhanced token refresh configuration
+	BackgroundRefreshThreshold = 0.5              // Refresh when token is 50% through its lifetime
+	RefreshRetryMaxAttempts    = 3                // Maximum number of refresh retry attempts
+	RefreshRetryBaseDelay      = 1 * time.Second  // Base delay for exponential backoff
+	RefreshRetryMaxDelay       = 30 * time.Second // Maximum delay between retry attempts
+	RefreshRetryMultiplier     = 2.0              // Multiplier for exponential backoff
+	RefreshJitterPercent       = 0.1              // Jitter percentage to avoid thundering herd
+	RefreshGracePeriod         = 30 * time.Second // Grace period to keep using old token if refresh fails
+	BackgroundRefreshInterval  = 1 * time.Minute  // Interval for checking background refresh needs
+	RefreshLockTimeout         = 10 * time.Second // Timeout for acquiring refresh lock
+
 	DefaultStorageDir = ".gemini"
 	TokenFileName     = "/oauth_creds.json"
 

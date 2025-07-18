@@ -159,13 +159,6 @@ func NewConfig(opts ...ConfigOption) *Config {
 	return config
 }
 
-// DefaultConfig returns a configuration with sensible defaults that match
-// the gemini-cli implementation behavior.
-// Deprecated: Use NewConfig() instead.
-func DefaultConfig() *Config {
-	return NewConfig()
-}
-
 // Validate ensures the configuration is valid and complete.
 func (c *Config) Validate() error {
 	if c.CodeAssistEndpoint == "" {
